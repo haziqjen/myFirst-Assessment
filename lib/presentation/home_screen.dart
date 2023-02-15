@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:map_exam/business_logic/auth_business_logic.dart';
+import 'package:map_exam/business_logic/note_business_logic.dart';
 import 'package:map_exam/core/constant.dart';
 
 import '../data/model/note.dart';
@@ -28,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isNotExpanded = false;
 
   int idSelected = 0;
+
+  final notesLogic = NotesLogic();
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Icons.delete,
                                 color: Colors.blue,
                               ),
-                              onPressed: () {},
+                              onPressed: () async{
+                                await notesLogic.deleteNotes(
+                                    docId: item?.id ?? '',
+                                    context: context);
+                              },
                             ),
                           ],
                         ) : const SizedBox.shrink(),
