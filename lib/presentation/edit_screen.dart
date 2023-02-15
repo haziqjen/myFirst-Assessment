@@ -60,7 +60,7 @@ class _EditScreenState extends State<EditScreen> {
             TextFormField(
               controller: _titleController,
               initialValue: null,
-              enabled: true,
+              enabled: argument.mode != ViewMode.VIEW,
               decoration: const InputDecoration(
                 hintText: 'Type the title here',
               ),
@@ -72,7 +72,7 @@ class _EditScreenState extends State<EditScreen> {
             Expanded(
               child: TextFormField(
                   controller: _descriptionController,
-                  enabled: true,
+                  enabled: argument.mode != ViewMode.VIEW,
                   initialValue: null,
                   maxLines: null,
                   expands: true,
