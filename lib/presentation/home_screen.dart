@@ -5,11 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:map_exam/business_logic/auth_business_logic.dart';
 import 'package:map_exam/business_logic/note_business_logic.dart';
 import 'package:map_exam/core/constant.dart';
+import 'package:map_exam/presentation/edit_screen.dart';
 
 import '../data/model/note.dart';
 
 class HomeScreen extends StatefulWidget {
-
   static Route route() => MaterialPageRoute(builder: (_) => const HomeScreen());
 
   const HomeScreen({Key? key}) : super(key: key);
@@ -42,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.blue.shade200,
             child: Text(
               notesLength.toString(),
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
             ),
           ),
           const SizedBox(
@@ -82,30 +83,43 @@ class _HomeScreenState extends State<HomeScreen> {
                     return ListTile(
                       trailing: SizedBox(
                         width: 110.0,
-                        child: idSelected == note.id ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit, color: Colors.blue),
-                              onPressed: () {},
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.blue,
-                              ),
-                              onPressed: () async{
-                                await notesLogic.deleteNotes(
-                                    docId: item?.id ?? '',
-                                    context: context);
-                              },
-                            ),
-                          ],
-                        ) : const SizedBox.shrink(),
+                        child: idSelected == note.id
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit,
+                                        color: Colors.blue),
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, EditScreen.routeName,
+                                          arguments: EditScreenArguments(
+                                              mode: ViewMode.EDIT, note: note));
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.blue,
+                                    ),
+                                    onPressed: () async {
+                                      await notesLogic.deleteNotes(
+                                          docId: item?.id ?? '',
+                                          context: context);
+                                    },
+                                  ),
+                                ],
+                              )
+                            : const SizedBox.shrink(),
                       ),
                       title: Text(note.title ?? ''),
-                      subtitle: !isNotExpanded ? Text(note.content ?? '') : null,
-                      onTap: () {},
+                      subtitle:
+                          !isNotExpanded ? Text(note.content ?? '') : null,
+                      onTap: () {
+                        Navigator.pushNamed(context, EditScreen.routeName,
+                            arguments: EditScreenArguments(
+                                mode: ViewMode.VIEW, note: note));
+                      },
                       onLongPress: () {
                         setState(() {
                           if (idSelected == note.id) {
@@ -139,7 +153,11 @@ class _HomeScreenState extends State<HomeScreen> {
             heroTag: 'add_note',
             child: const Icon(Icons.add),
             tooltip: 'Add a new note',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, EditScreen.routeName,
+                  arguments:
+                  EditScreenArguments(mode: ViewMode.ADD));
+            },
           ),
         ],
       ),

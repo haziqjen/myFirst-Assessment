@@ -10,6 +10,13 @@ const String kId = 'id';
 const String kTitle = 'title';
 const String kContent = 'content';
 
+//Mode View
+const String kEdit = 'Edit';
+const String kAdd = 'Add';
+const String kView = 'View';
+
+enum ViewMode { EDIT, ADD, VIEW }
+
 void showCustomSnackBar(
     {required BuildContext context, required String content, bool? isError}) {
   ScaffoldMessenger.of(context).showSnackBar(
@@ -21,4 +28,17 @@ void showCustomSnackBar(
       backgroundColor: (isError ?? false) ? kErrorColor : kSuccessColor,
     ),
   );
+}
+
+String getTitleAppBar(ViewMode mode) {
+  switch (mode) {
+    case ViewMode.EDIT:
+      return kEdit;
+    case ViewMode.ADD:
+      return '$kAdd new';
+    case ViewMode.VIEW:
+      return kView;
+    default:
+      return kView;
+  }
 }

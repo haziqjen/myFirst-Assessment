@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:map_exam/presentation/edit_screen.dart';
 import 'package:map_exam/presentation/login_screen.dart';
 
 import 'firebase_options.dart';
@@ -24,6 +25,9 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const LoginScreen(),
+      routes: {
+        EditScreen.routeName : (context) => const EditScreen(),
+      },
     );
   }
 }

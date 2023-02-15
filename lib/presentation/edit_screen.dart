@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:map_exam/core/constant.dart';
+import 'package:map_exam/data/model/note.dart';
+
+class EditScreenArguments {
+  final ViewMode mode;
+  final Note? note;
+
+  EditScreenArguments({required this.mode, this.note});
+}
 
 class EditScreen extends StatefulWidget {
   static Route route() => MaterialPageRoute(builder: (_) => const EditScreen());
+  static const routeName = '/editScreen';
 
   const EditScreen({Key? key}) : super(key: key);
 
@@ -15,11 +25,17 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final argument =
+        ModalRoute.of(context)!.settings.arguments as EditScreenArguments;
+
+    _titleController.text = argument.note?.title ?? '';
+    _descriptionController.text = argument.note?.content ?? '';
+
     return Scaffold(
       appBar: AppBar(
         leading: Container(),
         centerTitle: true,
-        title: const Text('App Bar Title'),
+        title: Text('${getTitleAppBar(argument.mode)} Notes'),
         actions: [
           IconButton(
               icon: const Icon(
