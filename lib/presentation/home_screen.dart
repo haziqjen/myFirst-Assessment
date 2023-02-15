@@ -1,8 +1,29 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class HomeScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:map_exam/business_logic/auth_business_logic.dart';
+import 'package:map_exam/core/constant.dart';
+
+import '../data/model/note.dart';
+
+class HomeScreen extends StatefulWidget {
+
   static Route route() => MaterialPageRoute(builder: (_) => const HomeScreen());
+
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final Stream<QuerySnapshot> notesStream = FirebaseFirestore.instance
+      .collection(kNotes)
+      .where(kUid, isEqualTo: AuthLogic().getUid)
+      .snapshots();
+
+  int notesLength = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +33,9 @@ class HomeScreen extends StatelessWidget {
         actions: [
           CircleAvatar(
             backgroundColor: Colors.blue.shade200,
-            child: const Text(
-              '4',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+            child: Text(
+              notesLength.toString(),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
             ),
           ),
           const SizedBox(
@@ -22,41 +43,69 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.separated(
-        itemCount: 4,
-        separatorBuilder: (context, index) => const Divider(
-          color: Colors.blueGrey,
-        ),
-        itemBuilder: (context, index) => ListTile(
-          trailing: SizedBox(
-            width: 110.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.blue,
-                  ),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ),
-          title: const Text('Note title'),
-          subtitle: const Text('Note content'),
-          onTap: () {},
-          onLongPress: () {},
-        ),
-      ),
+      body: StreamBuilder<QuerySnapshot>(
+          stream: notesStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (snapshot.hasData) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {
+                  notesLength = snapshot.data?.docs.length ?? 0;
+                });
+              });
+
+              return ListView.separated(
+                  itemCount: snapshot.data?.docs.length ?? 0,
+                  separatorBuilder: (context, index) => const Divider(
+                        color: Colors.blueGrey,
+                      ),
+                  itemBuilder: (context, index) {
+                    var item = snapshot.data?.docs.elementAt(index);
+                    var note = noteFromJson(jsonEncode(item?.data()));
+
+                    return ListTile(
+                      trailing: SizedBox(
+                        width: 110.0,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit, color: Colors.blue),
+                              onPressed: () {},
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.blue,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                      title: Text(note.title ?? ''),
+                      subtitle: Text(note.content ?? ''),
+                      onTap: () {},
+                      onLongPress: () {},
+                    );
+                  });
+            }
+            return const Text('Something went wrong');
+          }),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
+              heroTag: 'expand_content',
               child: const Icon(Icons.menu),
               tooltip: 'Show less. Hide notes content',
               onPressed: () {}),
@@ -64,6 +113,7 @@ class HomeScreen extends StatelessWidget {
           /* Notes: for the "Show More" icon use: Icons.menu */
 
           FloatingActionButton(
+            heroTag: 'add_note',
             child: const Icon(Icons.add),
             tooltip: 'Add a new note',
             onPressed: () {},
