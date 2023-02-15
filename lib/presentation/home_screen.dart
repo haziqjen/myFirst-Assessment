@@ -25,6 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int notesLength = 0;
 
+  bool isNotExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       title: Text(note.title ?? ''),
-                      subtitle: Text(note.content ?? ''),
+                      subtitle: !isNotExpanded ? Text(note.content ?? '') : null,
                       onTap: () {},
                       onLongPress: () {},
                     );
@@ -106,9 +108,13 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           FloatingActionButton(
               heroTag: 'expand_content',
-              child: const Icon(Icons.menu),
+              child: Icon(isNotExpanded ? Icons.menu : Icons.unfold_less),
               tooltip: 'Show less. Hide notes content',
-              onPressed: () {}),
+              onPressed: () {
+                setState(() {
+                  isNotExpanded = !isNotExpanded;
+                });
+              }),
 
           /* Notes: for the "Show More" icon use: Icons.menu */
 
