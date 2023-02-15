@@ -37,12 +37,14 @@ class _EditScreenState extends State<EditScreen> {
         centerTitle: true,
         title: Text('${getTitleAppBar(argument.mode)} Notes'),
         actions: [
-          IconButton(
-              icon: const Icon(
-                Icons.check_circle,
-                size: 30,
-              ),
-              onPressed: () {}),
+          argument.mode == ViewMode.VIEW
+              ? const SizedBox.shrink()
+              : IconButton(
+                  icon: const Icon(
+                    Icons.check_circle,
+                    size: 30,
+                  ),
+                  onPressed: () {}),
           IconButton(
               icon: const Icon(
                 Icons.cancel_sharp,
