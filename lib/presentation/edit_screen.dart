@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:map_exam/business_logic/auth_business_logic.dart';
+import 'package:map_exam/business_logic/note_business_logic.dart';
 import 'package:map_exam/core/constant.dart';
 import 'package:map_exam/data/model/note.dart';
 
@@ -22,6 +24,7 @@ class EditScreen extends StatefulWidget {
 class _EditScreenState extends State<EditScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final notesLogic = NotesLogic();
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +47,32 @@ class _EditScreenState extends State<EditScreen> {
                     Icons.check_circle,
                     size: 30,
                   ),
-                  onPressed: () {}),
+                  onPressed: () async {
+                    if (argument.mode == ViewMode.EDIT) {
+                      await notesLogic.updateNotes(
+                          note: Note(
+                              id: argument.note?.id ?? 0,
+                              title: _titleController.text,
+                              content: _descriptionController.text,
+                              uid: AuthLogic().getUid),
+                          context: context);
+                    } else if (argument.mode == ViewMode.ADD) {
+                      await notesLogic.addNotes(
+                          title: _titleController.text,
+                          content: _descriptionController.text,
+                          context: context);
+                    }
+
+                    Navigator.pop(context);
+                  }),
           IconButton(
               icon: const Icon(
                 Icons.cancel_sharp,
                 size: 30,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
         ],
       ),
       body: Container(

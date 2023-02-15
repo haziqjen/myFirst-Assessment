@@ -116,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       subtitle:
                           !isNotExpanded ? Text(note.content ?? '') : null,
                       onTap: () {
+                        idSelected = 0;
                         Navigator.pushNamed(context, EditScreen.routeName,
                             arguments: EditScreenArguments(
                                 mode: ViewMode.VIEW, note: note));
