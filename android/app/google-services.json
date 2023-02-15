@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "222692846534",
+    "project_id": "myfirst-assessment",
+    "storage_bucket": "myfirst-assessment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222692846534:android:b3abdfca55665f511b20c7",
+        "android_client_info": {
+          "package_name": "com.example.map_exam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222692846534-eugus7nfcsop3h9hvngdddco1g9m366f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDTWbN13gk--gbI2zDIqRvZ8drfZzL_NQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222692846534-eugus7nfcsop3h9hvngdddco1g9m366f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222692846534-108g1ilpmfe3b5t18q6e6qpuofaoibfs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.haziq.flutterStructure"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222692846534:android:35d04836107efb931b20c7",
+        "android_client_info": {
+          "package_name": "com.haziq.flutter_structure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222692846534-eugus7nfcsop3h9hvngdddco1g9m366f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDTWbN13gk--gbI2zDIqRvZ8drfZzL_NQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222692846534-eugus7nfcsop3h9hvngdddco1g9m366f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "222692846534-108g1ilpmfe3b5t18q6e6qpuofaoibfs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.haziq.flutterStructure"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
