@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:map_exam/business_logic/auth_business_logic.dart';
 
 class LoginScreen extends StatefulWidget {
   static Route route() =>
@@ -12,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final authLogic = AuthLogic();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 onTap: () {},
               ),
               const SizedBox(height: 10.0),
-              ElevatedButton(child: const Text('Sign in'), onPressed: () {}),
+              ElevatedButton(child: const Text('Sign in'), onPressed: () async{
+                await authLogic.loginUser(
+                    preLoginItem: PreLoginItem(email: _usernameController.text, password: _passwordController.text),
+                    context: context);
+              }),
             ],
           ),
         ),
