@@ -27,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool isNotExpanded = false;
 
+  int idSelected = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return ListTile(
                       trailing: SizedBox(
                         width: 110.0,
-                        child: Row(
+                        child: idSelected == note.id ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
@@ -92,12 +94,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () {},
                             ),
                           ],
-                        ),
+                        ) : const SizedBox.shrink(),
                       ),
                       title: Text(note.title ?? ''),
                       subtitle: !isNotExpanded ? Text(note.content ?? '') : null,
                       onTap: () {},
-                      onLongPress: () {},
+                      onLongPress: () {
+                        setState(() {
+                          if (idSelected == note.id) {
+                            idSelected = 0;
+                          } else {
+                            idSelected = note.id;
+                          }
+                        });
+                      },
                     );
                   });
             }
